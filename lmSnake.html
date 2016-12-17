@@ -1,6 +1,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>重力感应贪吃蛇</title>
 	<!-- <script type="text/javascript" src="./js/jquery.min.js"></script>  -->
 	<!-- <style> 
 			*{margin:0;padding:0;font-size:80px;} 
@@ -9,13 +10,10 @@
 	</style>  -->
 </head>
 <body>
+<img src="./img/1.png" hidden="true">
 <!-- <div id="note">666</div>  -->
 <canvas id="can" width="800" height="800" style="background:Black;z-index:-1;" ></canvas>
-<!--  <script type="text/javascript" src="./js/lmSnake.js"></script>  -->
-<script>
-eval(function(p,a,c,k,e,d){e=function(c){return(c<a?"":e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)d[e(c)]=k[c]||e(c);k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1;};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p;}('6 O=N.1o("1q");6 U=O.1n("1l");6 S=N.19.1w;6 L=N.19.1s;6 t=1,r=2,n=3,u=4;6 8=S>L?j.B(L/1f):j.B(S/1f);6 w=j.B(S/8)*8;6 F=j.B(L/8)*8;6 T=4*8;6 V=3*8;6 12=1r;O.1h("1u",w);O.1h("1t",F);f 16(){P.b=[];P.c=n}f m(x,y){P.x=x;P.y=y}6 7=l 16();6 17=l m(T,V);6 18=l m(T-8,V);7.b=[17,18];6 d;X();6 H=k;6 G=k;6 s=0;N.1v=f(e){6 g=e.1y-1z;C(g)};9(10.1x&&\'1m\'1p 10){10.1A(\'1O\',f(e){6 14=e.14,z=e.z,v=e.v;9(j.1a(v)>j.1a(z)){9(v>15&&v<I){C(n)}o 9(v>-I&&v<-15){C(t)}}o{9(z>15&&z<I){C(u)}o 9(z>-I&&z<-15){C(r)}}},k)}f C(g){9(g>0&&g<5){9(((g==r||g==u)&&(7.c==t||7.c==n))||((g==t||g==n)&&(7.c==r||7.c==u))){9(G){7.c=g;G=k;R.11(\'g:\'+g)}o{s=g;R.11(\'s:\'+s)}}}}!f(){9(1e()){9(1P(\'1M，1N，1S？\')==1){1T.1Q(k)}o{h}}9(1i()){A(d,\'1b\');X()}1g();1R(1E.1F,12)}();f A(p,13){U.1D=13;U.1B(p.x,p.y,8-2,8-2)}f 1g(){6 p=1d();7.b.1G(p);9(H){H=k}o{6 1c=7.b.1K();A(1c,\'1b\')}1k();G=q;9(s!=0){7.c=s;s=0;G=k}}f 1d(){6 a=7.b[0];6 p;1L(7.c){J r:p=l m(a.x,a.y-8);K;J u:p=l m(a.x,a.y+8);K;J t:p=l m(a.x-8,a.y);K;J n:p=l m(a.x+8,a.y);K}h p}f 1k(){W(6 i=0;i<7.b.Y;i++){9(i==0){A(7.b[i],\'1J\')}o{A(7.b[i],\'1H\')}}}f 1e(){6 a=7.b[0];9(((a.x+8)>=w&&7.c==n)||(a.x<=0&&7.c==t)||((a.y+8)>=F&&7.c==u)||(a.y<=0&&7.c==r)){h q}W(6 i=1;i<7.b.Y;i++){6 Q=7.b[i].x;6 M=7.b[i].y;9(Q==a.x){9(7.c==r&&M+8==a.y){h q}9(7.c==u&&M-8==a.y){h q}}9(M==a.y){9(7.c==t&&Q+8==a.x){h q}9(7.c==n&&Q-8==a.x){h q}}}h k}f 1i(){6 a=7.b[0];9(a.x==d.x&&a.y==d.y){H=q;h H}h k}f Z(){6 E=j.B(j.1j()*w/8)*8;6 D=j.B(j.1j()*F/8)*8;9(E>=w)E=E-8;9(D>=w)D=D-8;W(6 i=0;i<7.b.Y;i++){9(7.b[i].x==E&&7.b[i].y==D){h Z()}}h l m(E,D)}f X(){d=Z();9((d.x+8)>w||d.x<0||(d.y+8)>F||d.y<0){R.1I(\'x:\'+d.x+\';y:\'+d.y)}o{R.11(\'x:\'+d.x+\';y:\'+d.y)}A(d,\'1C\')}',62,118,'||||||var|snake|PER_SIZE|if|head|body|direction|food||function|key|return||Math|false|new|Point|D_RIGHT|else||true|D_UP|nextMove|D_LEFT|D_DOWN|gamma|MAP_WITDH|||beta|draw|floor|keydown|foody|foodx|MAP_HEIGHT|isMove|isEat|50|case|break|mheight|bodyy|document|map|this|bodyx|console|mwidth|BEGIN_HEAD_X|ctx|BEGIN_HEAD_Y|for|createFood|length|getFoodPoint|window|info|FRESHTIME|color|alpha||Snake|p1|p2|documentElement|abs|Black|p_old|getNewHeadPoint|isGameOver|20|move|setAttribute|eat|random|drawSnake|2d|ontouchstart|getContext|getElementById|in|can|400|clientHeight|height|width|onkeydown|clientWidth|DeviceOrientationEvent|keyCode|36|addEventListener|fillRect|Red|fillStyle|arguments|callee|unshift|Lime|error|Yellow|pop|switch|哈哈哈|you带了|deviceorientation|confirm|reload|setTimeout|是否重来|location'.split('|'),0,{}))
-
-</script>
+<script type="text/javascript" src="./js/lmSnake.js"></script>
 
 </body>
 
