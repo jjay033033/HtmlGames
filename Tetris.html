@@ -1,0 +1,693 @@
+<!doctype html>
+
+<html>
+
+<body>
+
+<canvas id="can" width="200" height="400" style="background:White"></canvas>
+<canvas id="score" width="200" height="400" style="z-index:1;left:0px;top:0px;position:absolute;"></canvas>
+
+<script>
+
+	var mwidth = document.documentElement.clientWidth;
+	var mheight = document.documentElement.clientHeight;
+	var TOTAL_X = 10;
+	var TOTAL_Y = 20;
+	var PER_SIZE = mwidth > mheight*(TOTAL_X/TOTAL_Y) ? Math.floor(mheight / TOTAL_Y) : Math.floor(mwidth / TOTAL_X);
+	var MAP_WIDTH = TOTAL_X * PER_SIZE;
+	var MAP_HEIGHT = TOTAL_Y * PER_SIZE;
+	var OFFSET_X = Math.floor((mwidth-MAP_WIDTH)/2);
+	var OFFSET_Y = Math.floor((mheight-MAP_HEIGHT)/2);
+	
+	var BORDER_KEY_LEFT = mwidth/3;
+	var BORDER_KEY_RIGHT = mwidth/3*2;
+
+	var COLOR_EXIST_TERTRIS = '#26ef61';
+	var COLOR_TERTRI = '#26ef61';
+	var COLOR_BLACKGROUND = 'Black';
+	var COLOR_OUTSIDE = 'White';
+	var FONT_COLOR = 'White';
+	var FONT_SIZE = PER_SIZE/1.5;
+	var FONT = 'Georgia';
+	var FONT_STROKE_COLOR = '#7f7f7f';
+	var FONT_STROKE_WIDTH = FONT_SIZE/10;
+	var FONT_X = PER_SIZE+OFFSET_X;
+	var FONT_Y = MAP_HEIGHT-PER_SIZE/2+OFFSET_Y;
+	
+	var MAP_STYLE = 'background:'+COLOR_BLACKGROUND+';position:absolute;left:'+OFFSET_X+'px;top:'+OFFSET_Y+'px;';
+
+	var map = document.getElementById("can");
+	var ctx = map.getContext("2d");
+	var scoreMap = document.getElementById("score");
+	var scoreCtx = scoreMap.getContext("2d");
+		
+	console.log(mwidth+';'+mheight);
+	console.log(MAP_WIDTH+';'+MAP_HEIGHT);
+	console.log(OFFSET_X+';'+OFFSET_Y);
+	map.setAttribute("width", mwidth);
+	map.setAttribute("height", mheight);
+	scoreMap.setAttribute("width", mwidth);
+	scoreMap.setAttribute("height", mheight);
+	//map.setAttribute("style",MAP_STYLE);
+	//console.log(MAP_WIDTH+';'+MAP_HEIGHT);
+	//定义上下左右,根据keycode定义
+	var D_LEFT = 1,D_UP = 2,D_RIGHT = 3,D_DOWN = 4;
+	var BEGIN_HEAD_X = 3;
+	var BEGIN_HEAD_Y = 0;
+	var FRESHTIME = 400;//刷新时间，时间越大，速度越慢
+	var isBooming = false;
+	
+	
+	var score = 0;
+	
+	var p = new Point(BEGIN_HEAD_X,BEGIN_HEAD_Y);
+	var t = TetrisRandom(p);
+	var ts = new Array(TOTAL_Y);
+	
+	for(var i=0;i<ts.length;i++){
+		ts[i] = new Array(TOTAL_X);
+		for(var j=0;j<ts[i].length;j++){
+			ts[i][j] = 0;
+		}
+	}
+	
+	clean();
+	totalShow();
+	!function(){
+		if(!isBooming){
+			if(isReachBottom(t)){
+				pushToTs(t);
+				dealDelLines(t);
+				if(isReachTop(t)){
+					console.log('Game over!');
+					if (confirm('Your 总分 is '+score+'，是否重来？') == 1) {
+						location.reload(false);
+					} else {
+						return;
+					}
+					return;
+				}
+				
+				p = new Point(BEGIN_HEAD_X,BEGIN_HEAD_Y);
+				t = TetrisRandom(p);
+				drawTetris(t.body,COLOR_TERTRI);
+			}else{
+				move(t);
+			}
+		}
+		setTimeout(arguments.callee,FRESHTIME);
+	}();
+	
+	var startY = 0;
+	if (window.DeviceOrientationEvent && 'ontouchstart' in window) {
+		window.addEventListener('touchstart', function(e) {
+			// 如果这个元素的位置内只有一个手指的话
+			//if (e.targetTouches.length == 1) {
+				e.preventDefault();//阻止浏览器默认事件，重要
+				var touch = e.targetTouches[0];
+				startY = touch.clientY;
+				
+			//}
+		}, false);
+		window.addEventListener('touchend', function(e) {
+			e.preventDefault();//阻止浏览器默认事件，重要
+			var touch = e.changedTouches[0];
+			if(Math.abs(touch.clientY-startY) < 10){
+				if(touch.clientX < BORDER_KEY_LEFT){
+					keydown(D_LEFT);
+				}else if(touch.clientX > BORDER_KEY_RIGHT){
+					keydown(D_RIGHT);
+				}else{
+					keydown(D_UP);
+				}
+			}
+			
+		}, false);
+		window.addEventListener('touchmove', function(e) {
+			e.preventDefault();//阻止浏览器默认事件，重要
+			var touch = e.targetTouches[0];
+			if(touch.clientY-startY > 0){
+				keydown(D_DOWN);
+			}
+		}, false);
+	}
+	
+	document.onkeydown = function(e){
+		//keycode:左37，上38，右39，下40
+		var key = e.keyCode-36;
+		keydown(key);
+	}
+	
+	function keydown(key){
+		if(!isBooming && key>0 && key<5){
+			if(key == D_LEFT){
+				if(!isReachLeft(t)){
+					moveLeft(t);
+				}
+			}else if(key == D_RIGHT){
+				if(!isReachRight(t)){
+					moveRight(t);
+				}
+			}else if(key == D_UP){
+				var temp_t = Tetris(t.point,(t.status+1)%4,t.type);
+				if(!isOutOfBorder(temp_t))rotate(t);
+			}else if(key == D_DOWN){
+				if(!isReachBottom(t)){
+					move(t);
+				}
+			}
+		}
+	}
+	
+	function isOutOfBorder(t){
+		for(var i=0;i<t.body.length;i++){
+			if(isTouchMapBottom(t.body[i].y-1) || isTouchMapLeft(t.body[i].x+1) || isTouchMapRight(t.body[i].x-1) || isTouchMapTop(t.body[i].y+1)
+			 || isTouchTsBottom(t.body[i].x,t.body[i].y-1)|| isTouchTsLeft(t.body[i].x+1,t.body[i].y)|| isTouchTsRight(t.body[i].x-1,t.body[i].y)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	function Point(x,y){
+		this.x = x;
+		this.y = y;
+	}
+	
+	function totalShow(){
+		scoreCtx.clearRect(0,0,mwidth,mheight);
+		var text = 'Score:'+score;
+		scoreCtx.lineWidth = FONT_STROKE_WIDTH;
+		scoreCtx.strokeStyle = FONT_STROKE_COLOR;
+		scoreCtx.strokeText(text,FONT_X,FONT_Y);
+		scoreCtx.font = FONT_SIZE+'px '+FONT;
+		scoreCtx.fillStyle = FONT_COLOR;
+		scoreCtx.fillText(text,FONT_X,FONT_Y);
+	}
+	
+	function TetrisRandom(p){
+		var t = Math.floor(Math.random()*7);
+		var s = Math.floor(Math.random()*4);
+		return Tetris(p,s,t);
+	}
+	
+	function Tetris(p,s,t){
+		var tetris;
+		switch(t){
+			case 0:
+				tetris = new TetrisI(p,s);
+				break;
+			case 1:
+				tetris = new TetrisT(p,s);
+				break;
+			case 2:
+				tetris = new TetrisL(p,s);
+				break;
+			case 3:
+				tetris = new TetrisJ(p,s);
+				break;
+			case 4:
+				tetris = new TetrisS(p,s);
+				break;
+			case 5:
+				tetris = new TetrisZ(p,s);
+				break;
+			default:
+				tetris = new TetrisO(p,s);
+				break;
+		}
+		tetris.status = s;
+		tetris.point = p;
+		tetris.type = t;
+		return tetris;
+	}
+	
+	function TetrisI(p,s){
+		var p1,p2,p3,p4;
+		switch(s){
+			case 0:
+			case 2:
+				p1 = new Point(p.x+2,p.y);
+				p2 = new Point(p1.x,p1.y-1);
+				p3 = new Point(p2.x,p2.y-1);
+				p4 = new Point(p3.x,p3.y-1);
+				break;
+			case 1:
+			case 3:
+				p1 = new Point(p.x,p.y-2);
+				p2 = new Point(p1.x+1,p1.y);
+				p3 = new Point(p2.x+1,p2.y);
+				p4 = new Point(p3.x+1,p3.y);
+				break;
+		}
+		this.body = [p1,p2,p3,p4];
+	}
+	
+	function TetrisT(p,s){
+		var p1,p2,p3,p4;
+		switch(s){
+			case 0:
+				p1 = new Point(p.x+1,p.y);
+				p2 = new Point(p1.x,p1.y-1);
+				p3 = new Point(p2.x-1,p2.y);
+				p4 = new Point(p2.x,p2.y-1);
+				break;
+			case 1:
+				p1 = new Point(p.x,p.y);
+				p2 = new Point(p1.x+1,p1.y);
+				p3 = new Point(p2.x+1,p2.y);
+				p4 = new Point(p2.x,p2.y-1);
+				break;
+			case 2:
+				p1 = new Point(p.x+1,p.y);
+				p2 = new Point(p1.x,p1.y-1);
+				p3 = new Point(p2.x+1,p2.y);
+				p4 = new Point(p2.x,p2.y-1);
+				break;
+			case 3:
+				p1 = new Point(p.x+1,p.y);
+				p2 = new Point(p1.x,p1.y-1);
+				p3 = new Point(p2.x-1,p2.y);
+				p4 = new Point(p2.x+1,p2.y);
+				break;
+		}
+		this.body = [p1,p2,p3,p4];
+	}
+	
+	function TetrisL(p,s){
+		var p1,p2,p3,p4;
+		switch(s){
+			case 0:
+				p1 = new Point(p.x+1,p.y);
+				p2 = new Point(p1.x,p1.y-1);
+				p3 = new Point(p2.x,p2.y-1);
+				p4 = new Point(p3.x-1,p3.y);
+				break;
+			case 1:
+				p1 = new Point(p.x,p.y);
+				p2 = new Point(p1.x+1,p1.y);
+				p3 = new Point(p2.x+1,p2.y);
+				p4 = new Point(p3.x,p3.y-1);
+				break;
+			case 2:
+				p1 = new Point(p.x+1,p.y);
+				p2 = new Point(p1.x,p1.y-1);
+				p3 = new Point(p2.x,p2.y-1);
+				p4 = new Point(p1.x+1,p1.y);
+				break;
+			case 3:
+				p1 = new Point(p.x,p.y);
+				p2 = new Point(p1.x,p1.y-1);
+				p3 = new Point(p2.x+1,p2.y);
+				p4 = new Point(p3.x+1,p3.y);
+				break;
+		}
+		this.body = [p1,p2,p3,p4];
+	}
+	
+	function TetrisJ(p,s){
+		var p1,p2,p3,p4;
+		switch(s){
+			case 0:
+				p1 = new Point(p.x,p.y);
+				p2 = new Point(p1.x+1,p1.y);
+				p3 = new Point(p2.x,p2.y-1);
+				p4 = new Point(p3.x,p3.y-1);
+				break;
+			case 1:
+				p1 = new Point(p.x,p.y);
+				p2 = new Point(p1.x+1,p1.y);
+				p3 = new Point(p2.x+1,p2.y);
+				p4 = new Point(p1.x,p1.y-1);
+				break;
+			case 2:
+				p1 = new Point(p.x+1,p.y);
+				p2 = new Point(p1.x,p1.y-1);
+				p3 = new Point(p2.x,p2.y-1);
+				p4 = new Point(p3.x+1,p3.y);
+				break;
+			case 3:
+				p1 = new Point(p.x+2,p.y);
+				p2 = new Point(p1.x,p1.y-1);
+				p3 = new Point(p2.x-1,p2.y);
+				p4 = new Point(p3.x-1,p3.y);
+				break;
+		}
+		this.body = [p1,p2,p3,p4];
+	}
+	
+	function TetrisS(p,s){
+		var p1,p2,p3,p4;
+		switch(s){
+			case 0:
+			case 2:
+				p1 = new Point(p.x+1,p.y);
+				p2 = new Point(p1.x,p1.y-1);
+				p3 = new Point(p2.x-1,p2.y);
+				p4 = new Point(p3.x,p3.y-1);
+				break;
+			case 1:
+			case 3:
+				p1 = new Point(p.x,p.y);
+				p2 = new Point(p1.x+1,p1.y);
+				p3 = new Point(p2.x,p2.y-1);
+				p4 = new Point(p3.x+1,p3.y);
+				break;
+		}
+		this.body = [p1,p2,p3,p4];
+	}
+	
+	function TetrisZ(p,s){
+		var p1,p2,p3,p4;
+		switch(s){
+			case 0:
+			case 2:
+				p1 = new Point(p.x+1,p.y);
+				p2 = new Point(p1.x,p1.y-1);
+				p3 = new Point(p2.x+1,p2.y);
+				p4 = new Point(p3.x,p3.y-1);
+				break;
+			case 1:
+			case 3:
+				p1 = new Point(p.x+1,p.y);
+				p2 = new Point(p1.x+1,p1.y);
+				p3 = new Point(p1.x,p1.y-1);
+				p4 = new Point(p3.x-1,p3.y);
+				break;
+		}
+		this.body = [p1,p2,p3,p4];
+	}
+	
+	function TetrisO(p,s){
+		var p1,p2,p3,p4;
+		p1 = new Point(p.x+1,p.y);
+		p2 = new Point(p1.x+1,p1.y);
+		p3 = new Point(p2.x,p2.y-1);
+		p4 = new Point(p3.x-1,p3.y);
+		this.body = [p1,p2,p3,p4];
+	}
+	
+	
+	function move(t){
+		drawTetris(t.body,COLOR_BLACKGROUND);
+		for(var i=0;i<t.body.length;i++){
+			t.body[i].y = t.body[i].y+1;
+		}
+		t.point = new Point(t.point.x,t.point.y+1);
+		drawTetris(t.body,COLOR_TERTRI);
+	}
+	
+	function moveLeft(t){
+		drawTetris(t.body,COLOR_BLACKGROUND);
+		for(var i=0;i<t.body.length;i++){
+			t.body[i].x = t.body[i].x-1;
+		}
+		t.point = new Point(t.point.x-1,t.point.y);
+		drawTetris(t.body,COLOR_TERTRI);
+	}
+	
+	function moveRight(t){
+		drawTetris(t.body,COLOR_BLACKGROUND);
+		for(var i=0;i<t.body.length;i++){
+			t.body[i].x = t.body[i].x+1;
+		}
+		t.point = new Point(t.point.x+1,t.point.y);
+		drawTetris(t.body,COLOR_TERTRI);
+	}
+	
+	function rotate(t){
+		drawTetris(t.body,COLOR_BLACKGROUND);
+		this.t = Tetris(t.point,(t.status+1)%4,t.type);
+		drawTetris(this.t.body,COLOR_TERTRI);
+	}
+	
+	//画笔
+	function draw(p,color){
+		drawXY(p.x,p.y,color);
+	}		
+	
+	function drawTetris(list,color){
+		for(var i=0;i<list.length;i++){
+			if(list[i].y>-1){
+				draw(list[i],color);
+			}
+		}
+	}
+	
+	function drawLine(y,color){
+		ctx.fillStyle = color;
+		ctx.fillRect(OFFSET_X,y*PER_SIZE+OFFSET_Y,PER_SIZE*TOTAL_X,PER_SIZE);
+	}
+	
+	function drawXY(x,y,color){
+		ctx.fillStyle = color;
+		ctx.fillRect(x*PER_SIZE+1+OFFSET_X,y*PER_SIZE+1+OFFSET_Y,PER_SIZE-2,PER_SIZE-2);
+	}	
+	
+	function clean(){
+		ctx.fillStyle = COLOR_OUTSIDE;
+		ctx.fillRect(0,0,mwidth,mheight);
+		ctx.fillStyle = COLOR_BLACKGROUND;
+		ctx.fillRect(OFFSET_X,OFFSET_Y,MAP_WIDTH,MAP_HEIGHT);
+	}
+	
+	function drawAllTetris(){
+		for(var i=0;i<ts.length;i++){
+			for(var j=0;j<ts[i].length;j++){
+				if(ts[i][j]){
+					drawXY(j,i,COLOR_EXIST_TERTRIS);
+				}else{
+					drawXY(j,i,COLOR_BLACKGROUND);
+				}
+			}
+		}
+	}
+	
+	function isTouchMapBottom(y){
+		return y >= TOTAL_Y-1;
+	}
+	
+	function isTouchMapTop(y){
+		return y <= 0;
+	}
+	
+	function isTouchMapLeft(x){
+		return x <= 0;
+	}
+	
+	function isTouchMapRight(x){
+		return x >= TOTAL_X-1;
+	}
+	
+	function isTouchTsBottom(x,y){
+		return y>-2&&ts[y+1][x];
+	}
+	
+	function isTouchTsLeft(x,y){
+		return y>-1&&ts[y][x-1];
+	}
+	
+	function isTouchTsRight(x,y){
+		return y>-1&&ts[y][x+1];
+	}
+	
+	function isReachBottom(t){
+		for(var i=0;i<t.body.length;i++){
+			if(isTouchMapBottom(t.body[i].y))return true;
+			if(isTouchTsBottom(t.body[i].x,t.body[i].y))return true;
+		}
+		return false;
+	}
+	
+	function isReachTop(t){
+		for(var i=0;i<t.body.length;i++){
+			if(isTouchMapTop(t.body[i].y))return true;
+		}
+		return false;
+	}
+	
+	function isReachLeft(t){
+		for(var i=0;i<t.body.length;i++){
+			if(isTouchMapLeft(t.body[i].x))return true;
+			if(isTouchTsLeft(t.body[i].x,t.body[i].y))return true;
+		}
+		return false;
+	}
+	
+	function isReachRight(t){
+		for(var i=0;i<t.body.length;i++){
+			if(isTouchMapRight(t.body[i].x))return true;
+			if(isTouchTsRight(t.body[i].x,t.body[i].y))return true;
+		}
+		return false;
+	}
+	
+	function pushToTs(t){
+		for(var i=0;i<t.body.length;i++){
+			var x = t.body[i].x;
+			var y = t.body[i].y;
+			if(y>-1){
+				ts[y][x] = 1;
+			}
+		}
+	}
+	
+	function dealDelLines(t){
+		var hasDelLine = false;
+		var delCount = 0;
+		var ys = [];
+		for(var i=0;i<t.body.length;i++){
+			var x = t.body[i].x;
+			var y = t.body[i].y;
+			if(y>-1 && (i==0||y!=t.body[i-1].y) && isDelLine(y)){
+				ys.push(y);
+				//delLine(y);
+				delCount++;
+				hasDelLine = true;
+			}
+		}
+		if(hasDelLine){
+//			clean();
+//			drawAllTetris();
+			doBoom(ys,function(){delLine(ys);});
+			dealScore(delCount);
+		}
+	}
+	
+	function dealScore(c){
+		switch(c){
+			case 1:
+				score += 100;
+				break;
+			case 2:
+				score += 300;
+				break;
+			case 3:
+				score += 500;
+				break;
+			case 4:
+				score += 800;
+				break;
+			default:
+				break;
+		}
+		totalShow();
+	}
+	
+	function isDelLine(y){
+		for(var j=0;j<ts[y].length;j++){
+			if(!ts[y][j])return false;
+		}
+		return true;
+	}
+	
+	function delLine(ys){
+		for(var i=0;i<ys.length;i++){
+			ts.splice(ys[i]+i,1);
+			var newLine = new Array(TOTAL_X);
+			for(var j=0;j<newLine.length;j++){
+				newLine[j] = 0;
+			}
+			ts.unshift(newLine);
+		}	
+		isBooming = false;
+	}
+	
+	function doBoom(ys,callback){
+		isBooming = true;
+		//初始化准备散落的方块
+		var tiles=[];
+		for(var j=0;j<ys.length;j++){
+			var tis = [];
+			for(var i=0;i<TOTAL_X;i++){
+				var tile = new Tile();
+				tile.originX = OFFSET_X+i*PER_SIZE;
+				tile.originY = OFFSET_Y+ys[j]*PER_SIZE;
+				tile.currentX = tile.originX;
+				tile.currentY = tile.originY;
+				tile.rotate = (0.5-Math.random())*Math.PI/8;
+				tile.moveX = Math.abs(i-TOTAL_X/2)*(Math.random()+1);
+				tile.y = ys[j];
+				tis.push(tile);
+			}
+			tiles.push(tis);
+		}
+		
+		boom(ys,tiles,0,callback);
+	}
+
+	function boom(ys,tiles,times,callback){
+		clean();
+		drawAllTetris();		
+		if(tiles[0][0].currentY>mheight+PER_SIZE){
+			callback();
+			clean();
+			drawAllTetris();	
+			return;
+		}
+		times++;
+		//ctx.clearRect(OFFSET_X,y*PER_SIZE+OFFSET_Y,PER_SIZE*TOTAL_X,PER_SIZE);
+		for(var j=0;j<tiles.length;j++){
+			drawLine(tiles[j][0].y,COLOR_BLACKGROUND);
+		}
+		console.log('boom:'+times);
+		for(var j=0;j<tiles.length;j++){
+			for(var i=0;i<tiles[j].length;i++){
+				var tile = tiles[j][i];
+				if(i<TOTAL_X/2){
+					tile.currentX -= (tile.moveX);
+					
+				}else{
+					tile.currentX += (tile.moveX);
+				}
+				
+				if(times<5){
+					tile.currentY = tile.originY-(4.9*(times)*(times)*0.2)+0.1*times;
+					if(times==4){
+						tile.originY = tile.currentY;
+					}
+				}else{
+					tile.currentY = tile.originY+(4.9*(times-4)*(times-4)*0.2);
+				}
+				
+				tile.rotation += tile.rotate;
+				
+				ctx.save();			
+				ctx.translate(tile.currentX, tile.currentY);
+				ctx.rotate(tile.rotation);
+				ctx.fillStyle = COLOR_EXIST_TERTRIS;
+				ctx.fillRect(0,0,PER_SIZE,PER_SIZE);
+				ctx.strokeStyle = COLOR_BLACKGROUND;
+				ctx.strokeRect(0,0,PER_SIZE,PER_SIZE);
+				//ctx.drawImage(copycanvas, tile.videoX, tile.videoY, TILE_WIDTH, TILE_HEIGHT, -TILE_CENTER_WIDTH, -TILE_CENTER_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
+				ctx.restore();
+			}
+		}
+		
+		
+		setTimeout(function(){boom(ys,tiles,times,callback);},40);
+	}
+	
+	function Tile(){
+		this.currentX = 0;
+		this.currentY = 0;
+		this.originX = 0;
+		this.originY = 0;
+		this.moveX = 0;
+		this.rotate = 0;
+		this.rotation = 0;
+		this.y = 0;
+	}
+	
+	function sleep(n){  
+		var start=new Date().getTime();  
+		while(true)
+			if(new Date().getTime()-start>n)break;  
+	}  
+
+
+</script>
+
+</body>
+
+</html>
