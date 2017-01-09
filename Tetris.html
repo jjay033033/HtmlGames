@@ -21,7 +21,6 @@
 </div>
 
 <script>
-
 	var mwidth = document.documentElement.clientWidth;
 	var mheight = document.documentElement.clientHeight;
 	var TOTAL_X = 10;
@@ -56,7 +55,7 @@
 	var DOWN_X = 0;
 	var DOWN_Y = mheight - LEFT_Y;
 	
-
+	var COLOR_STROKE = 'Black';
 	var COLOR_EXIST_TERTRIS = '#26ef61';
 	var COLOR_TERTRI = '#26ef61';
 	var COLOR_BLACKGROUND = 'Black';
@@ -70,7 +69,6 @@
 	var FONT_Y = MAP_HEIGHT-PER_SIZE/2+OFFSET_Y;
 	
 	var MAP_STYLE = 'background:'+COLOR_BLACKGROUND+';position:absolute;left:'+OFFSET_X+'px;top:'+OFFSET_Y+'px;';
-
 	var map = document.getElementById("can");
 	var ctx = map.getContext("2d");
 	var scoreMap = document.getElementById("score");
@@ -102,7 +100,6 @@
 	//var buttonLineStyle2 = "background:url(img/33.png);"+buttonStyle+buttonLineStyle;
 	//var buttonRowStyle1 = "background:none;"+buttonStyle+buttonRowStyle;
 	//var buttonRowStyle2 = "background:url(img/44.png);"+buttonStyle+buttonRowStyle;
-
 	
 	var upStyle1 = buttonLineStyle+"left:"+UP_X+"px;top:"+UP_Y+"px;";
 	var upStyle2 = upStyle1+"display:none";
@@ -300,7 +297,6 @@
 					move(t);
 				}
 			}else if(key == D_SPECIAL){
-
 			}
 		}
 	}
@@ -586,9 +582,40 @@
 	}
 	
 	function drawXY(x,y,color){
+		drawXYReal( x*PER_SIZE+0.5+OFFSET_X,  y*PER_SIZE+0.5+OFFSET_Y,color);
+	}	
+	
+	function drawXYReal(x,y,color){
+		drawRoundedRect(COLOR_STROKE, color,  x,  y, PER_SIZE-1,  PER_SIZE-1, Math.floor(PER_SIZE/6));
+	}	
+	
+	/*function drawXY(x,y,color){
 		ctx.fillStyle = color;
 		ctx.fillRect(x*PER_SIZE+1+OFFSET_X,y*PER_SIZE+1+OFFSET_Y,PER_SIZE-2,PER_SIZE-2);
-	}	
+	}	*/
+
+	function roundedRect(cornerX, cornerY, width, height, cornerRadius) {
+	   if (width> 0) ctx.moveTo(cornerX + cornerRadius, cornerY);
+	   else  ctx.moveTo(cornerX - cornerRadius, cornerY);
+	   ctx.arcTo(cornerX+width,cornerY,cornerX + width,cornerY+height,cornerRadius);
+	   ctx.arcTo(cornerX+width,cornerY + height,cornerX,cornerY+height,cornerRadius);
+	   ctx.arcTo(cornerX,cornerY+height,cornerX,cornerY,cornerRadius);
+	   if(width> 0) {
+		  ctx.arcTo(cornerX,cornerY,cornerX+cornerRadius,cornerY,cornerRadius);
+	   }
+	   else{
+		 ctx.arcTo(cornerX,cornerY,cornerX-cornerRadius,cornerY,cornerRadius);
+	   }
+	}
+	
+	function drawRoundedRect(strokeStyle,fillStyle,cornerX,cornerY,width,height,cornerRadius) {
+	   ctx.beginPath();
+	   roundedRect(cornerX, cornerY, width, height, cornerRadius);
+	   ctx.strokeStyle = strokeStyle;
+	   ctx.fillStyle = fillStyle;
+	   ctx.stroke();
+	   ctx.fill();
+	}
 	
 	function clean(){
 		ctx.fillStyle = COLOR_OUTSIDE;
@@ -761,7 +788,6 @@
 		
 		boom(ys,tiles,0,callback);
 	}
-
 	function boom(ys,tiles,times,callback){
 		clean();
 		drawAllTetris();		
@@ -801,17 +827,18 @@
 				ctx.save();			
 				ctx.translate(tile.currentX, tile.currentY);
 				ctx.rotate(tile.rotation);
-				ctx.fillStyle = COLOR_EXIST_TERTRIS;
-				ctx.fillRect(0,0,PER_SIZE,PER_SIZE);
-				ctx.strokeStyle = COLOR_BLACKGROUND;
-				ctx.strokeRect(0,0,PER_SIZE,PER_SIZE);
+				//ctx.fillStyle = COLOR_EXIST_TERTRIS;
+				//ctx.fillRect(0,0,PER_SIZE,PER_SIZE);
+				//ctx.strokeStyle = COLOR_BLACKGROUND;
+				//ctx.strokeRect(0,0,PER_SIZE,PER_SIZE);
+				drawXYReal(0,0,COLOR_EXIST_TERTRIS);
 				//ctx.drawImage(copycanvas, tile.videoX, tile.videoY, TILE_WIDTH, TILE_HEIGHT, -TILE_CENTER_WIDTH, -TILE_CENTER_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
 				ctx.restore();
 			}
 		}
 		
 		
-		setTimeout(function(){boom(ys,tiles,times,callback);},40);
+		setTimeout(function(){boom(ys,tiles,times,callback);},20);
 	}
 	
 	function Tile(){
@@ -830,8 +857,6 @@
 		while(true)
 			if(new Date().getTime()-start>n)break;  
 	}  
-
-
 </script>
 
 </body>
