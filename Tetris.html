@@ -5,19 +5,19 @@
 </head>
 <body>
 
-<canvas id="can" width="200" height="400" style="background:White"></canvas>
+<canvas id="can" width="200" height="400" style="z-index:-1;background:White"></canvas>
 <canvas id="score" width="200" height="400" style="z-index:1;left:0px;top:0px;position:absolute;"></canvas>
 <div>
-<!-- <img id="up" src="33.png" style="z-index:0;left:0px;top:0px;position:absolute;"/>
-<img id="left" src="44.png" style="z-index:0;left:0px;top:0px;position:absolute;"/>
-<img id="center" src="44.png" style="z-index:0;left:0px;top:0px;position:absolute;"/>
-<img id="right" src="44.png" style="z-index:0;left:0px;top:0px;position:absolute;"/>
-<img id="down" src="33.png" style="z-index:0;left:0px;top:0px;position:absolute;"/> -->
-<input id="up" type="button" onclick='buttondown(5)' />
- <input id="left" type="button" onclick='buttondown(1)' />
- <input id="center" type="button" onclick='buttondown(2)' />
- <input id="right" type="button" onclick='buttondown(3)' />
- <input id="down" type="button" onclick='buttondown(4)' />
+<img id="up" src="img/33.png" />
+<img id="left" src="img/44.png" />
+<img id="center" src="img/44.png" />
+<img id="right" src="img/44.png" />
+<img id="down" src="img/33.png" />
+<!-- <input id="up" type="button" onclick='buttondown(5)' /> -->
+ <!-- <input id="left" type="button" onclick='buttondown(1)' /> -->
+ <!-- <input id="center" type="button" onclick='buttondown(2)' /> -->
+ <!-- <input id="right" type="button" onclick='buttondown(3)' /> -->
+ <!-- <input id="down" type="button" onclick='buttondown(4)' /> -->
 </div>
 
 <script>
@@ -92,39 +92,40 @@
 	centerButton.setAttribute("width", BUTTON_ROW_WIDTH);
 	centerButton.setAttribute("height", BUTTON_ROW_HEIGHT);
 	
-	var buttonLineStyle = "width:"+BUTTON_LINE_WIDTH+"px;height:"+BUTTON_LINE_HEIGHT+"px;";
-	var buttonRowStyle = "width:"+BUTTON_ROW_WIDTH+"px;height:"+BUTTON_ROW_HEIGHT+"px;";
+	var buttonStyle = "z-index:2;position:absolute;";
+	//var buttonStyle = "z-index:2;position:absolute;background-size: 100% 100%;border: 0;padding: 0;";
 	
-	var buttonStyle = "z-index:2;position:absolute;background-size: 100% 100%;border: 0;padding: 0;";
+	var buttonLineStyle = buttonStyle+"width:"+BUTTON_LINE_WIDTH+"px;height:"+BUTTON_LINE_HEIGHT+"px;";
+	var buttonRowStyle = buttonStyle+"width:"+BUTTON_ROW_WIDTH+"px;height:"+BUTTON_ROW_HEIGHT+"px;";
 	
-	var buttonLineStyle1 = "background:none;"+buttonStyle+buttonLineStyle;
-	var buttonLineStyle2 = "background:url(img/33.png);"+buttonStyle+buttonLineStyle;
-	var buttonRowStyle1 = "background:none;"+buttonStyle+buttonRowStyle;
-	var buttonRowStyle2 = "background:url(img/44.png);"+buttonStyle+buttonRowStyle;
+	//var buttonLineStyle1 = "background:none;"+buttonStyle+buttonLineStyle;
+	//var buttonLineStyle2 = "background:url(img/33.png);"+buttonStyle+buttonLineStyle;
+	//var buttonRowStyle1 = "background:none;"+buttonStyle+buttonRowStyle;
+	//var buttonRowStyle2 = "background:url(img/44.png);"+buttonStyle+buttonRowStyle;
 
 	
-	var upStyle1 = buttonLineStyle1+"left:"+UP_X+"px;top:"+UP_Y+"px;";
-	var upStyle2 = buttonLineStyle2+"left:"+UP_X+"px;top:"+UP_Y+"px;";
+	var upStyle1 = buttonLineStyle+"left:"+UP_X+"px;top:"+UP_Y+"px;";
+	var upStyle2 = upStyle1+"display:none";
 	
-	var downStyle1 = buttonLineStyle1+"left:"+DOWN_X+"px;top:"+DOWN_Y+"px;";
-	var downStyle2 = buttonLineStyle2+"left:"+DOWN_X+"px;top:"+DOWN_Y+"px;";
+	var downStyle1 = buttonLineStyle+"left:"+DOWN_X+"px;top:"+DOWN_Y+"px;";
+	var downStyle2 = downStyle1+"display:none";
 	
-	var leftStyle1 = buttonRowStyle1+"left:"+LEFT_X+"px;top:"+LEFT_Y+"px;";
-	var leftStyle2 = buttonRowStyle2+"left:"+LEFT_X+"px;top:"+LEFT_Y+"px;";
+	var leftStyle1 = buttonRowStyle+"left:"+LEFT_X+"px;top:"+LEFT_Y+"px;";
+	var leftStyle2 = leftStyle1+"display:none";
 	
-	var rightStyle1 = buttonRowStyle1+"left:"+RIGHT_X+"px;top:"+RIGHT_Y+"px;";
-	var rightStyle2 = buttonRowStyle2+"left:"+RIGHT_X+"px;top:"+RIGHT_Y+"px;";
+	var rightStyle1 = buttonRowStyle+"left:"+RIGHT_X+"px;top:"+RIGHT_Y+"px;";
+	var rightStyle2 = rightStyle1+"display:none";
 	
-	var centerStyle1 = buttonRowStyle1+"left:"+CENTER_X+"px;top:"+CENTER_Y+"px;";
-	var centerStyle2 = buttonRowStyle2+"left:"+CENTER_X+"px;top:"+CENTER_Y+"px;";
+	var centerStyle1 = buttonRowStyle+"left:"+CENTER_X+"px;top:"+CENTER_Y+"px;";
+	var centerStyle2 = centerStyle1+"display:none";
 	
 	
 	
-	upButton.setAttribute("style", upStyle1);
-	downButton.setAttribute("style", downStyle1);
-	leftButton.setAttribute("style", leftStyle1);
-	rightButton.setAttribute("style", rightStyle1);
-	centerButton.setAttribute("style", centerStyle1);
+	upButton.setAttribute("style", upStyle2);
+	downButton.setAttribute("style", downStyle2);
+	leftButton.setAttribute("style", leftStyle2);
+	rightButton.setAttribute("style", rightStyle2);
+	centerButton.setAttribute("style", centerStyle2);
 		
 	console.log(mwidth+';'+mheight);
 	console.log(MAP_WIDTH+';'+MAP_HEIGHT);
@@ -199,7 +200,7 @@
 	
 	
 	if (window.DeviceOrientationEvent && 'ontouchstart' in window) {
-		/*window.addEventListener('touchstart', function(e) {
+		window.addEventListener('touchstart', function(e) {
 			// 如果这个元素的位置内只有一个手指的话
 			//if (e.targetTouches.length == 1) {
 				e.preventDefault();//阻止浏览器默认事件，重要
@@ -211,18 +212,28 @@
 			e.preventDefault();//阻止浏览器默认事件，重要
 			var touch = e.changedTouches[0];
 			if(touch.clientY < BUTTON_TOP){
+				upButton.setAttribute("style", upStyle1);
+				setTimeout(function(){upButton.setAttribute("style", upStyle2);},100);
 				keydown(D_SPECIAL);
 			}else if(touch.clientY > BUTTON_DOWN){
+				downButton.setAttribute("style", downStyle1);
+				setTimeout(function(){downButton.setAttribute("style", downStyle2);},100);
 				keydown(D_DOWN);
 			}else if(touch.clientX < BUTTON_LEFT && touch.clientY >BUTTON_TOP && touch.clientY < BUTTON_DOWN){
+				leftButton.setAttribute("style", leftStyle1);
+				setTimeout(function(){leftButton.setAttribute("style", leftStyle2);},100);
 				keydown(D_LEFT);
 			}else if(touch.clientX > BUTTON_RIGHT && touch.clientY > BUTTON_TOP && touch.clientY < BUTTON_DOWN){
+				rightButton.setAttribute("style", rightStyle1);
+				setTimeout(function(){rightButton.setAttribute("style", rightStyle2);},100);
 				keydown(D_RIGHT);
 			}else{
+				centerButton.setAttribute("style", centerStyle1);
+				setTimeout(function(){centerButton.setAttribute("style", centerStyle2);},100);
 				keydown(D_UP);
 			}			
 		}, false);
-		window.addEventListener('touchend', function(e) {
+		/*window.addEventListener('touchend', function(e) {
 			e.preventDefault();//阻止浏览器默认事件，重要
 			var touch = e.changedTouches[0];
 			if(Math.abs(touch.clientY-startY) < 10){
@@ -251,25 +262,25 @@
 		keydown(key);
 	}
 	
-	function buttondown(key){
+	/*function buttondown(key){
 		if(key == D_LEFT){
-			leftButton.setAttribute("style", leftStyle2);
-			setTimeout(function(){leftButton.setAttribute("style", leftStyle1);},100);
+			leftButton.setAttribute("style", leftStyle1);
+			setTimeout(function(){leftButton.setAttribute("style", leftStyle2);},100);
 		}else if(key == D_RIGHT){
-			rightButton.setAttribute("style", rightStyle2);
-			setTimeout(function(){rightButton.setAttribute("style", rightStyle1);},100);
+			rightButton.setAttribute("style", rightStyle1);
+			setTimeout(function(){rightButton.setAttribute("style", rightStyle2);},100);
 		}else if(key == D_UP){
-			centerButton.setAttribute("style", centerStyle2);
-			setTimeout(function(){centerButton.setAttribute("style", centerStyle1);},100);
+			centerButton.setAttribute("style", centerStyle1);
+			setTimeout(function(){centerButton.setAttribute("style", centerStyle2);},100);
 		}else if(key == D_DOWN){
-			downButton.setAttribute("style", downStyle2);
-			setTimeout(function(){downButton.setAttribute("style", downStyle1);},100);
+			downButton.setAttribute("style", downStyle1);
+			setTimeout(function(){downButton.setAttribute("style", downStyle2);},100);
 		}else if(key == D_SPECIAL){
-			upButton.setAttribute("style", upStyle2);
-			setTimeout(function(){upButton.setAttribute("style", upStyle1);},100);
+			upButton.setAttribute("style", upStyle1);
+			setTimeout(function(){upButton.setAttribute("style", upStyle2);},100);
 		}
 		keydown(key);
-	}
+	}*/
 	
 	function keydown(key){
 		if(!isBooming && key>0 && key<6){
