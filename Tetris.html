@@ -8,16 +8,23 @@
 <canvas id="can" width="200" height="400" style="z-index:-1;background:White"></canvas>
 <canvas id="score" width="200" height="400" style="z-index:1;left:0px;top:0px;position:absolute;"></canvas>
 <div>
-<img id="up" src="img/33.png" />
-<img id="left" src="img/66.png" />
-<img id="center" src="img/66.png" />
-<img id="right" src="img/66.png" />
-<img id="down" src="img/33.png" />
+	<img id="up" src="img/33.png" />
+	<img id="left" src="img/66.png" />
+	<img id="center" src="img/66.png" />
+	<img id="right" src="img/66.png" />
+	<img id="down" src="img/33.png" />
 <!-- <input id="up" type="button" onclick='buttondown(5)' /> -->
  <!-- <input id="left" type="button" onclick='buttondown(1)' /> -->
  <!-- <input id="center" type="button" onclick='buttondown(2)' /> -->
  <!-- <input id="right" type="button" onclick='buttondown(3)' /> -->
  <!-- <input id="down" type="button" onclick='buttondown(4)' /> -->
+<div>
+	<img id="cat1" src="img/3.gif" style="display:none"/>
+	<img id="cat2" src="img/6.gif" style="display:none"/>
+	<img id="cat3" src="img/5.gif" style="display:none"/>
+	<img id="cat4" src="img/4.gif" style="display:none"/>
+	<canvas id="cText" style="display:none"></canvas>
+	</div>
 </div>
 
 <script>
@@ -82,6 +89,15 @@
 	var ctx = map.getContext("2d");
 	var scoreMap = document.getElementById("score");
 	var scoreCtx = scoreMap.getContext("2d");
+	
+	var cat1 = document.getElementById("cat1");
+	var cat2 = document.getElementById("cat2");
+	var cText = document.getElementById("cText");
+	var cTextCtx = cText.getContext("2d");
+	
+	cText.setAttribute("width", mwidth);
+	cText.setAttribute("height", mheight);
+	
 	var upButton = document.getElementById("up");
 	var downButton = document.getElementById("down");	
 	var leftButton = document.getElementById("left");
@@ -99,7 +115,7 @@
 	centerButton.setAttribute("width", BUTTON_ROW_WIDTH);
 	centerButton.setAttribute("height", BUTTON_ROW_HEIGHT);
 	
-	var buttonStyle = "z-index:2;position:absolute;";
+	var buttonStyle = "z-index:10;position:absolute;";
 	//var buttonStyle = "z-index:2;position:absolute;background-size: 100% 100%;border: 0;padding: 0;";
 	
 	var buttonLineStyle = buttonStyle+"width:"+BUTTON_LINE_WIDTH+"px;height:"+BUTTON_LINE_HEIGHT+"px;";
@@ -157,6 +173,9 @@
 	var t;
 	var ts;	
 	
+	var seeButton = true;
+	
+	alert('点击左边区域左移，右边区域右移，中间区域变形，下方区域加速下降，上边区域查看游戏帮助。确定后开始了哦~');
 	init();
 	function init(){
 		isBooming = false;
@@ -186,12 +205,12 @@
 				dealDelLines(t);
 				if(isReachTop(t)){
 					console.log('Game over!');
-					<!-- if (confirm('Your 总分 is '+score+'，是否重来？') == 1) { -->
-						<!-- //location.reload(false); -->
-						<!-- init(); -->
-					<!-- } else { -->
-						<!-- return; -->
-					<!-- } -->
+					if (confirm('Your 总分 is '+score+'，是否重来？') == 1) {
+						//location.reload(false);
+						init();
+					} else {
+						return;
+					}
 					return;
 				}
 				
@@ -219,24 +238,34 @@
 			e.preventDefault();//阻止浏览器默认事件，重要
 			var touch = e.changedTouches[0];
 			if(touch.clientY < BUTTON_TOP){
-				upButton.setAttribute("style", upStyle1);
-				setTimeout(function(){upButton.setAttribute("style", upStyle2);},100);
+				if(seeButton){
+					upButton.setAttribute("style", upStyle1);
+					setTimeout(function(){upButton.setAttribute("style", upStyle2);},100);
+				}
 				keydown(D_SPECIAL);
 			}else if(touch.clientY > BUTTON_DOWN){
-				downButton.setAttribute("style", downStyle1);
-				setTimeout(function(){downButton.setAttribute("style", downStyle2);},100);
+				if(seeButton){
+					downButton.setAttribute("style", downStyle1);
+					setTimeout(function(){downButton.setAttribute("style", downStyle2);},100);
+				}
 				keydown(D_DOWN);
 			}else if(touch.clientX < BUTTON_LEFT && touch.clientY >BUTTON_TOP && touch.clientY < BUTTON_DOWN){
-				leftButton.setAttribute("style", leftStyle1);
-				setTimeout(function(){leftButton.setAttribute("style", leftStyle2);},100);
+				if(seeButton){
+					leftButton.setAttribute("style", leftStyle1);
+					setTimeout(function(){leftButton.setAttribute("style", leftStyle2);},100);
+				}
 				keydown(D_LEFT);
 			}else if(touch.clientX > BUTTON_RIGHT && touch.clientY > BUTTON_TOP && touch.clientY < BUTTON_DOWN){
-				rightButton.setAttribute("style", rightStyle1);
-				setTimeout(function(){rightButton.setAttribute("style", rightStyle2);},100);
+				if(seeButton){
+					rightButton.setAttribute("style", rightStyle1);
+					setTimeout(function(){rightButton.setAttribute("style", rightStyle2);},100);
+				}
 				keydown(D_RIGHT);
 			}else{
-				centerButton.setAttribute("style", centerStyle1);
-				setTimeout(function(){centerButton.setAttribute("style", centerStyle2);},100);
+				if(seeButton){
+					centerButton.setAttribute("style", centerStyle1);
+					setTimeout(function(){centerButton.setAttribute("style", centerStyle2);},100);
+				}
 				keydown(D_UP);
 			}			
 		}, false);
@@ -307,6 +336,11 @@
 					move(t);
 				}
 			}else if(key == D_SPECIAL){
+				if (confirm('看**，自己到处点一下就知道啦:)话说是否想关闭按键区域提示？) == 1) {
+					seeButton = false;
+				}else{
+					seeButton = true;
+				}
 			}
 		}
 	}
@@ -615,7 +649,6 @@
 		ctx.fillStyle = color;
 		ctx.fillRect(x*PER_SIZE+1+OFFSET_X,y*PER_SIZE+1+OFFSET_Y,PER_SIZE-2,PER_SIZE-2);
 	}	*/
-
 	function roundedRect(cornerX, cornerY, width, height, cornerRadius) {
 		ctx.moveTo(cornerX + cornerRadius, cornerY);
 		ctx.arcTo(cornerX+width,cornerY,cornerX + width,cornerY+height,cornerRadius);
@@ -749,15 +782,19 @@
 		switch(c){
 			case 1:
 				score += 100;
+				moveCat(cat1,mwidth,"一层也消，逗逗逗逗。。。");
 				break;
 			case 2:
 				score += 300;
+				moveCat(cat2,mwidth,"233333。。。");
 				break;
 			case 3:
 				score += 500;
+				moveCat(cat3,mwidth,"红红火火恍恍惚惚。。。");
 				break;
 			case 4:
 				score += 800;
+				moveCat(cat4,mwidth,"66666666666。。。");
 				break;
 			default:
 				break;
@@ -872,10 +909,31 @@
 		this.y = 0;
 		this.color = COLOR_GREEN;
 	}
+	
+	function moveCat(cat,catX,txt){
+		var ch = mheight/7;
+		cat.setAttribute("height", ch);
+		cat.setAttribute("style", "z-index:4;position:absolute;left:"+catX+"px;top:"+ch*3+"px;");
+		cText.setAttribute("style","z-index:3;position:absolute;left:0;top:0;");
+		cTextCtx.clearRect(0,0,mwidth,mheight);
+		cTextCtx.font=ch+"px Arial";
+		var cwidth = cTextCtx.measureText(txt).width;
+	
+		cTextCtx.fillStyle = "White";
+		cTextCtx.fillRect(0,ch*3,mwidth, ch);
+		cTextCtx.fillStyle = "Black";
+		cTextCtx.fillText(txt,catX+cat.width,ch*4-5);
+		catX -= 20;
+		if(catX>-cat.width-cwidth){
+			setTimeout(function(){moveCat(cat,catX,txt);},40);
+		}else{
+			cat.setAttribute("style", "display:none;");
+			cText.setAttribute("style", "display:none;");
+		}
+	}
 	 
 </script>
 
 </body>
 
 </html>
-
