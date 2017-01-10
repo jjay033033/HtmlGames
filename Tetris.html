@@ -205,7 +205,19 @@
 				dealDelLines(t);
 				if(isReachTop(t)){
 					console.log('Game over!');
-					if (confirm('Your 总分 is '+score+'，是否重来？') == 1) {
+					var msg = '得0分，r u kidding me???';
+					if(score>0 && score<1000){
+						msg = '恭喜您，Your 总分 is '+score+'击败了全国90%的LOL玩家';
+					}else if(score>=1000 && score<5000){
+						msg = '拿了'+score+'分，可以喔小伙子。';
+					}else if(score>=5000 && score<10000){
+						msg = 'u got '+score+'分，老夫看你骨骼惊奇，确是练武之才。';
+					}else if(score>=10000 && score<50000){
+						msg = '666666，'+score+'分，骨灰级玩家。';
+					}else if(score>=50000){
+						msg = '我擦，'+score+'分，求分享作弊器。1192743812@qq.com好人一世平安。';
+					}
+					if (confirm(msg+'是否重来？') == 1) {
 						//location.reload(false);
 						init();
 					} else {
