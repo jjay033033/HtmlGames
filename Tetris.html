@@ -604,11 +604,11 @@
 	}
 	
 	function drawXY(x,y,color){
-		drawXYReal( x*PER_SIZE+OFFSET_X+1.5,  y*PER_SIZE+OFFSET_Y+1.5,color,COLOR_STROKE);
+		drawXYReal( x*PER_SIZE+OFFSET_X+2,  y*PER_SIZE+OFFSET_Y+2,color,COLOR_STROKE);
 	}	
 	
 	function drawXYReal(x,y,color,colorStroke){
-		drawRoundedRect(colorStroke, color,  x,  y, PER_SIZE-3,  PER_SIZE-3, Math.floor(PER_SIZE/6));
+		drawRoundedRect(colorStroke, color,  x,  y, PER_SIZE-4,  PER_SIZE-4, Math.floor(PER_SIZE/6));
 	}	
 	
 	/*function drawXY(x,y,color){
