@@ -944,7 +944,7 @@
 		cTextCtx.fillText(txt,catX+cat.width,ch*4-5);
 		catX -= 20;
 		if(catX>-cat.width-cwidth){
-			setTimeout(function(){moveCat(cat,catX,txt);},40);
+			setTimeout(function(){moveCat(cat,catX,txt);},100);
 		}else{
 			cat.setAttribute("style", "display:none;");
 			cText.setAttribute("style", "display:none;");
