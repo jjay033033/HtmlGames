@@ -931,8 +931,8 @@
 	
 	function moveCat(cat,catX,txt){
 		var ch = mheight/7;
-		cat.setAttribute("height", ch);
-		cat.setAttribute("style", "z-index:4;position:absolute;left:"+catX+"px;top:"+ch*3+"px;");
+		//cat.setAttribute("height", ch);
+		//cat.setAttribute("style", "z-index:4;position:absolute;left:"+catX+"px;top:"+ch*3+"px;");
 		cText.setAttribute("style","z-index:3;position:absolute;left:0;top:0;");
 		cTextCtx.clearRect(0,0,mwidth,mheight);
 		cTextCtx.font=ch+"px Arial";
@@ -946,7 +946,7 @@
 		if(catX>-cat.width-cwidth){
 			setTimeout(function(){moveCat(cat,catX,txt);},100);
 		}else{
-			cat.setAttribute("style", "display:none;");
+			//cat.setAttribute("style", "display:none;");
 			cText.setAttribute("style", "display:none;");
 		}
 	}
