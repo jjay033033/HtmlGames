@@ -21,7 +21,7 @@ function Api(name,url){
 	apis.push(new Api("通用接口6","http://yun.mt2t.com/yun?url="));
 	apis.push(new Api("腾讯视频","http://api.47ks.com/webcloud/?v="));	
 	apis.push(new Api("搜狐视频","http://v.72du.com/api/?url="));
-	apis.push(new Api("爱奇艺高清","http://jx.71ki.com/index.php?url="));
+	apis.push(new Api("爱奇艺高清","https://aikan-tv.com/qy.php?url="));
 	//apis.push(new Api("磁力链接","http://apiv.ga/magnet/"));
 	var table = '<table>';
 	for(var i=0;i<apis.length;i++){
