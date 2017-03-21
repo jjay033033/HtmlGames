@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "vipvideo",
-	"version": "1.0",
+	"version": "2.0",
 	"description": "vipvideo",
 	"browser_action": {
 		"default_title": "vipvideo",
