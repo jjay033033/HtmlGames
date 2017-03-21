@@ -47,6 +47,7 @@ function addAction(apis){
 }
 
 function doRedirect(apiUrl){
-	chrome.tabs.create({url : "http://www.lmoon.top/vipvideo_ext2.html?url="+apiUrl+thisUrl}, function(tab) {});
+	var url = encodeURI(apiUrl+thisUrl);
+	chrome.tabs.create({url : "http://www.lmoon.top/vipvideo_ext2.html?url="+url}, function(tab) {});
 }
 
