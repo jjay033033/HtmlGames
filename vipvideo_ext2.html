@@ -1,0 +1,25 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>vip视频破破破</title>
+</head>
+<body style="margin: 0;padding: 0;">
+	<div style='margin:0 auto;width:0px;height:0px;overflow:hidden;'>
+		<img src="img/3.png" width='700'>
+	</div>
+	<div style="padding:0;margin:0;width:100%;height:100%;">
+		<iframe id="vipurl" frameborder="0" scrolling="no" width="100%" height="100%"></iframe>
+	</div>
+	<script language="javascript" type="text/javascript"> 
+		function GetQueryString(name)
+		{
+			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if(r!=null)return  unescape(r[2]); return null;
+		}
+		var urls = GetQueryString("url");
+		document.getElementById("vipurl").src = urls;
+	</script>
+</body>
+</html>
+

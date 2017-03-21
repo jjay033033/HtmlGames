@@ -1,0 +1,12 @@
+{
+	"manifest_version": 2,
+	"name": "vipvideo",
+	"version": "1.0",
+	"description": "vipvideo",
+	"browser_action": {
+		"default_title": "vipvideo",
+		"default_popup": "vipvideo.html"
+	},
+	"content_security_policy": "script-src 'self'; object-src 'self'",
+	"permissions":["tabs"]
+}
