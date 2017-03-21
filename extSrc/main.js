@@ -1,4 +1,4 @@
-var thisUrl;
+﻿var thisUrl;
 
 function initUrl(){
 	chrome.tabs.getSelected(null,function(tab){  
