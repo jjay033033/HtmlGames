@@ -17,7 +17,7 @@
 			var r = window.location.search.substr(1).match(reg);
 			if(r!=null)return  unescape(r[2]); return null;
 		}
-		var urls = GetQueryString("url");
+		var urls = window.atob(GetQueryString("url"));
 		document.getElementById("vipurl").src = urls;
 	</script>
 </body>
