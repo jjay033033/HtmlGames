@@ -1,6 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="js/jquery-3.2.0.min.js"></script>
 <title>vip视频破破破</title>
 </head>
 <body style="margin: 0; padding: 0;">
@@ -13,18 +14,7 @@
 				<td style="font-size: 3em;">视频地址:</td>
 				<td><input style="font-size: 3em; width: 300px" id="valueurl" /></td>
 				<td><select id="api" style="font-size: 3em;">
-						<option value="http://api.47ks.com/webcloud/?v=">通用接口1</option>
-						<!--<option value="http://000o.cc/jx/ty.php?url=" >通用接口2</option>-->
-						<option value="http://api.mp4la.net/?url=">通用接口3</option>
-						<option value="http://v.72du.com/api/?url=">通用接口4</option>
-						<option value="http://www.yydy8.com/Common/?url=">通用接口5</option>
-						<option value="http://yun.mt2t.com/yun?url=">通用接口6</option>
-						<option value="http://api.47ks.com/webcloud/?v=">腾讯视频</option>
-						<option value="https://aikan-tv.com/qy.php?url=">爱奇艺高清</option>
-						<!--<option value="http://v.1gnk.com/ckflv/index.php?url=" >爱奇艺高清2</option>-->
-						<option value="http://v.72du.com/api/?url=">搜狐</option>
-						<!--<option value="http://jiexi.6080q.com/mgtv.php?url=" >芒果TV</option>-->
-						<!--<option value="http://apiv.ga/magnet/">磁力链接</option>-->
+						<option value="http://api.47ks.com/webcloud/?v=">加载ing...</option>
 				</select></td>
 				<td><input style="font-size: 3em;" id="go" type="button"
 					value="我破" /></td>
@@ -34,6 +24,21 @@
 			height="100%"></iframe>
 	</div>
 	<script>
+	!function(){
+		var dataroot="extSrc/data.json"; 
+		$.getJSON(dataroot, function(data){ 
+			apis=data.apis; 
+			var table = '';
+			for(var i=0;i<apis.length;i++){
+				table += '<option value="';
+				table += apis[i].url;
+				table += '">';
+				table += apis[i].name;
+				table += '</option>';
+			}
+			document.getElementById('api').innerHTML = table;
+		}); 
+	}();
 	document.getElementById("go").addEventListener("click", function() {
 		document.getElementById("infos").style = "display:none;";
 		document.getElementById("vipurl").src = document.getElementById("api").value + document.getElementById("valueurl").value;
