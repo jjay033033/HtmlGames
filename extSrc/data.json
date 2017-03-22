@@ -5,14 +5,6 @@
 			"url": "http://api.47ks.com/webcloud/?v="
 		},
 		{
-			"name": "通用接口3",
-			"url": "http://api.mp4la.net/?url="
-		},
-		{
-			"name": "通用接口4",
-			"url": "http://v.72du.com/api/?url="
-		},
-		{
 			"name": "通用接口5",
 			"url": "http://www.yydy8.com/Common/?url="
 		},
@@ -23,10 +15,6 @@
 		{
 			"name": "腾讯视频",
 			"url": "http://api.47ks.com/webcloud/?v="
-		},
-		{
-			"name": "搜狐视频",
-			"url": "http://v.72du.com/api/?url="
 		},
 		{
 			"name": "爱奇艺高清",
