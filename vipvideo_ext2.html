@@ -18,7 +18,7 @@
 			if(r!=null)return  unescape(r[2]); return null;
 		}
 		var urls = window.atob(GetQueryString("url")); */
-		document.getElementById("vipurl").src = window.atob(window.location.search.substr(1));
+		document.getElementById("vipurl").src = decodeURI(window.atob(window.location.search.substr(1)));
 	</script>
 </body>
 </html>
