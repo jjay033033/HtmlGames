@@ -18,10 +18,10 @@
 			if(r!=null)return  unescape(r[2]); return null;
 		} 
 		//var urls = window.atob(GetQueryString("url")); 
-		//var urls = decodeURI(window.atob(window.location.search.substr(1)));
+		var urls = decodeURI(window.atob(window.location.search.substr(1)));
 		//console.info("aaa:"+urls);
-		document.getElementById("vipurl").src = GetQueryString("url");
-		//document.getElementById("vipurl").src = urls;
+		//document.getElementById("vipurl").src = GetQueryString("url");
+		document.getElementById("vipurl").src = urls;
 	</script>
 </body>
 </html>
