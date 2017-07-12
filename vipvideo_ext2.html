@@ -11,16 +11,17 @@
 		<iframe id="vipurl" frameborder="0" scrolling="no" width="100%" height="100%"></iframe>
 	</div>
 	<script language="javascript" type="text/javascript"> 
-		function GetQueryString(name)
+		/* function GetQueryString(name)
 		{
 			var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
 			var r = window.location.search.substr(1).match(reg);
 			if(r!=null)return  unescape(r[2]); return null;
-		}
+		} */
 		//var urls = window.atob(GetQueryString("url")); 
-		console.info(GetQueryString("url"));
-		document.getElementById("vipurl").src = GetQueryString("url");
-		//document.getElementById("vipurl").src = decodeURI(window.atob(window.location.search.substr(1)));
+		var urls = decodeURI(window.atob(window.location.search.substr(1)));
+		console.info("aaa:"+urls);
+		//document.getElementById("vipurl").src = GetQueryString("url");
+		document.getElementById("vipurl").src = urls;
 	</script>
 </body>
 </html>
