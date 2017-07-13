@@ -13,12 +13,16 @@
 			"url": "http://yun.mt2t.com/yun?url="
 		},
 		{
+			"name": "通用接口4",
+			"url": "http://www.65yw.com/chaojikan.php?url="
+		},
+		{
 			"name": "腾讯视频",
 			"url": "http://api.47ks.com/webcloud/?v="
 		},
 		{
 			"name": "爱奇艺高清",
 			"url": "https://aikan-tv.com/qy.php?url="
-		}
+		}		
 	]
 }
