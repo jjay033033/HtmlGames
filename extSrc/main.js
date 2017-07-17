@@ -11,6 +11,8 @@ function Api(name,url){
 	this.url = url;
 }
 
+//http://www.w3dev.cn/article/20140703/chrome-extension-get-tab-page-dom.aspx
+//http://www.iqiyi.com/v_19rr7ye898.html?fc=87bbded392d221f5
 chrome.extension.onRequest.addListener(//监听扩展程序进程或内容脚本发送请求的请求
 	function (request, sender, sendResponse) {
 		console.info(request);
