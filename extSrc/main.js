@@ -50,21 +50,25 @@ function addAction(apis){
 	for(var i=0;i<apis.length;i++){
 		document.getElementById('button'+i).onclick = function(){
 			// doRedirect(this.getAttribute("api"));
-			//openInTab(this.getAttribute("api")+thisUrl);
 			var api = this.getAttribute("api");
 			chrome.tabs.getSelected(null, function (tab) {//获取当前tab
-				// var theurl = api +tab.url;
-				//向tab发送请求
-				chrome.tabs.sendRequest(tab.id, { url: api +tab.url }, function (response) {
-					console.info("todojs");
-				});
+				var theurl = api +tab.url;
+				if(api.indexOf("https://")!=-1){
+					doRedirect(theurl);
+				}else{
+					//向tab发送请求
+					chrome.tabs.sendRequest(tab.id, { url: theurl }, function (response) {
+						console.info("todojs");
+					});
+				}
+				
 			});
 		};
 	}
 }
 
 function doRedirect(apiUrl){
-	var url = window.btoa(encodeURI(apiUrl+thisUrl));
+	var url = window.btoa(encodeURI(apiUrl));
 //	var url = "url="+apiUrl+thisUrl;
 	chrome.tabs.create({url : "http://www.lmoon.top/vipvideo_ext2.html?"+url}, function(tab) {});
 }
