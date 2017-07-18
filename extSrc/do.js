@@ -51,6 +51,11 @@ function openInTab(url){
     if(window.location.href.indexOf("youku")!=-1){
         document.querySelector(".vpactionv5_iframe_wrap").style.display="none";
     }
+	if(window.location.href.indexOf("iqiyi")!=-1){
+        document.querySelector(".control").style.display="none";
+		document.querySelector(".process-response").style.display="none";
+		document.querySelector(".control-tips-vip").style.display="none";
+    }
     /*run-at document-start 才能有效
     if(window.location.href.indexOf("iqiyi")!=-1){                                                   //页内解析重音问题，代码来源→19349-江小白：https://greasyfork.org/zh-CN/scripts/29873-%E8%A7%A3%E5%86%B3%E5%A5%87%E8%89%BA%E8%A7%A3%E6%9E%90%E9%97%AE%E9%A2%98/code
         Object.defineProperty(navigator, "userAgent", {
