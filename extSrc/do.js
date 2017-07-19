@@ -36,15 +36,21 @@ function openInTab(url){
             }
             return true;
         });
+		//爱奇艺页内解析重音问题
+		var btnplay = document.querySelector(".btn-video");
+		var btnpause = document.querySelector(".btn-pause");
+		if(video && window.location.href.indexOf("iqiyi")!=-1&&btnplay&&btnpause){
+			btnplay.click();
+		}
 		if(document.querySelector("#TMiframe")){
 			video=document.querySelector("#TMiframe");
 		}
         if(video){
-			alert(video.paused);
-			if(video.paused==false){
-				video.pause();
-				alert(video.paused);
-			}
+			// alert(video.paused);
+			// if(video.paused==false){
+				// video.pause();
+				// alert(video.paused);
+			// }
 			// console.info(video.parentNode);
             clearInterval(timer);
             var videoStyle=getComputedStyle(video, null);
