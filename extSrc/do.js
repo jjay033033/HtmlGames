@@ -40,11 +40,11 @@ function openInTab(url){
 			video=document.querySelector("#TMiframe");
 		}
         if(video){
-			// alert(video.paused);
-			// if(video.paused==false){
-				// video.pause();
-				// alert(video.paused);
-			// }
+			alert(video.paused);
+			if(video.paused==false){
+				video.pause();
+				alert(video.paused);
+			}
 			// console.info(video.parentNode);
             clearInterval(timer);
             var videoStyle=getComputedStyle(video, null);
@@ -63,7 +63,7 @@ function openInTab(url){
 		document.querySelector(".process-response").style.display="none";
 		document.querySelector(".control-tips-vip").style.display="none";
     }
-    /*run-at document-start 才能有效*/
+    /*run-at document-start 才能有效
     if(window.location.href.indexOf("iqiyi")!=-1){                                                   //页内解析重音问题，代码来源→19349-江小白：https://greasyfork.org/zh-CN/scripts/29873-%E8%A7%A3%E5%86%B3%E5%A5%87%E8%89%BA%E8%A7%A3%E6%9E%90%E9%97%AE%E9%A2%98/code
         Object.defineProperty(navigator, "userAgent", {
             value: "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.2661.102 Safari/537.36",
@@ -71,6 +71,6 @@ function openInTab(url){
             configurable: false,
             enumerable: true
         });
-    }                                                                                                 //19349-江小白 借用代码End
+    }  */                                                                                               //19349-江小白 借用代码End
     
 }

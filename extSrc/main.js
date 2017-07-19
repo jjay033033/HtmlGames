@@ -14,9 +14,15 @@ function Api(name,url){
 //http://www.w3dev.cn/article/20140703/chrome-extension-get-tab-page-dom.aspx
 //http://www.iqiyi.com/v_19rr7ye898.html?fc=87bbded392d221f5
 
+var isInsideEle = document.getElementById('isInside');
+isInsideEle.onclick = function(){
+	// alert(isInsideEle.checked);
+	window.localStorage.isInside = isInsideEle.checked;
+};
 
 !function(){
 	initUrl();
+	initIsInsideHtml();
 	var apis = new Array();
 //	apis.push(new Api("通用接口1","http://api.47ks.com/webcloud/?v="));
 //	apis.push(new Api("通用接口3","http://api.mp4la.net/?url="));
@@ -46,6 +52,13 @@ function Api(name,url){
 	
 }();
 
+function initIsInsideHtml(){
+	// console.info(window.localStorage.isInside);
+	if(window.localStorage.isInside == 'true'){
+		isInsideEle.checked = true;
+	}
+}
+
 function addAction(apis){
 	for(var i=0;i<apis.length;i++){
 		document.getElementById('button'+i).onclick = function(){
@@ -53,7 +66,7 @@ function addAction(apis){
 			var api = this.getAttribute("api");
 			chrome.tabs.getSelected(null, function (tab) {//获取当前tab
 				var theurl = api +tab.url;
-				if(api.indexOf("https://")!=-1){
+				if(!isInsideEle.checked||api.indexOf("https://")!=-1){
 					doRedirect(theurl);
 				}else{
 					//向tab发送请求
