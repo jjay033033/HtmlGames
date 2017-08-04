@@ -1,0 +1,20 @@
+{
+	"manifest_version": 2,
+	"name": "test",
+	"version": "1.0",
+	"description": "test",
+	"browser_action": {
+		"default_title": "test",
+		"default_popup": "vipvideo.html"
+	},
+	"content_security_policy": "script-src 'self'; object-src 'self'",
+	"content_scripts": [{
+		"matches": [
+			"http://www.tianya.cn/"
+		],
+		"js": [
+			"do.js"
+		]
+	}],
+	"permissions": ["*://*/*","tabs"]
+}
