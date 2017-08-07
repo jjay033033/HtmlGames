@@ -3,6 +3,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script type="text/javascript" src="js/jquery-3.2.0.min.js"></script>
 	<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+	<script type="text/javascript" src="https://vast-inlet-75928.herokuapp.com/stat.js"></script>
 	<title>vip视频破破破</title>
 </head>
 <body style="margin: 0;padding: 0;">
@@ -24,17 +25,9 @@
 		//console.info("aaa:"+urls);
 		//document.getElementById("vipurl").src = GetQueryString("url");
 		document.getElementById("vipurl").src = urls;
-
-		var cip = returnCitySN["cip"];
-		var cname = returnCitySN["cname"];
-		$.ajax({
-            type: "GET",//post
-            url: "https://vast-inlet-75928.herokuapp.com/vipAdd",
-            data: {ip:cip+","+cname+",e2"},
-            dataType: "JSONP",
-            success: function(data){}
-        });
+		
 	</script>
+	
 </body>
 </html>
 
