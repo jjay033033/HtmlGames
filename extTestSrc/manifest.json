@@ -8,13 +8,19 @@
 		"default_popup": "vipvideo.html"
 	},
 	"content_security_policy": "script-src 'self'; object-src 'self'",
-	"content_scripts": [{
-		"matches": [
-			"http://www.tianya.cn/"
-		],
-		"js": [
-			"do.js"
-		]
-	}],
-	"permissions": ["*://*/*","tabs"]
+	"content_scripts": [
+		{
+			"matches": [
+				"http://www.tianya.cn/"
+			],
+			"js": [
+				"do.js"
+			]
+		}
+	],
+	"permissions": [
+		"*://*/*",
+		"tabs",
+		"cookies"
+	]
 }

