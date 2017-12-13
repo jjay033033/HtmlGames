@@ -14,7 +14,14 @@ chrome.webRequest.onBeforeRequest.addListener (
             // console.log("current url -> " + pageUrl);  
 			// alert(pageUrl);
         // });  
+		//console.log(details);  
 		details.requestBody.formData.encrypt = 0;
+		details.requestBody.formData.extra = details.requestBody.formData.extra[0];
+		details.requestBody.formData.fid_list = details.requestBody.formData.fid_list[0];
+		details.requestBody.formData.path_list = details.requestBody.formData.path_list[0];
+		details.requestBody.formData.primaryid = details.requestBody.formData.primaryid[0];
+		details.requestBody.formData.product = details.requestBody.formData.product[0];
+		details.requestBody.formData.uk = details.requestBody.formData.uk[0];
 		console.log(details);  
 		// 使用消息机制将请求传递给页面再发起 ajax，而不是在背景页中发起
         chrome.tabs.sendMessage(details.tabId, details, function(response) {
@@ -22,7 +29,7 @@ chrome.webRequest.onBeforeRequest.addListener (
             // 此处可以修改response...
             // redirectUrl = "data:application/json;charset=UTF-8;base64," + Base64.encode(newResponse)
         });
-		// return {cancel: true};
+		 return {cancel: true};
 			// alert(details);
   
     },  
