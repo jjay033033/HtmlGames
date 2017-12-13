@@ -1,7 +1,10 @@
 chrome.extension.onRequest.addListener(//监听扩展程序进程或内容脚本发送请求的请求
 	function (request, sender, sendResponse) {
-		console.info(request.url);
-		openInTab(request.url);
+		console.info("1234444");
+		console.info(request);
+		console.info(sender);
+		console.info(sendResponse);
+		// openInTab(request.url);
 //		alert(request.url);
 		// if (request.action == "GetBaiduKeyWord") {
 			// sendResponse({ kw: { kw: document.forms[0].wd.value } });
@@ -11,6 +14,49 @@ chrome.extension.onRequest.addListener(//监听扩展程序进程或内容脚本
 		// }
 	}
 );
+
+chrome.runtime.onMessage.addListener(
+        function(request, sender, sendResponse) {
+			console.info("11111111111122222");
+		console.info(request);
+		console.info(sender);
+		console.info(sendResponse);
+            // 重新发起的请求要做标记，避免无限循环
+            var settings = {
+                url: request.url + "#do_not_modify_this_request",
+                method: request.method,
+                dataType: "text"
+            };
+            if (request.requestBody && request.requestBody.formData) {
+                settings.data = request.requestBody.formData;
+            }
+            $.ajax(settings).done(function(data) {
+				console.info("finished!");
+                sendResponse(data);
+            });
+            // 由于 sendResponse 是异步调用的，需要返回 true
+            return true;
+        }
+);
+
+//监听所有请求  
+// chrome.webRequest.onBeforeRequest.addListener (  
+  
+    // function(details) {  
+      
+        // chrome.tabs.query({active:true},function(tab){  
+            // // 当前页面的url  
+            // var pageUrl = tab[0].url;  
+            // // 在这可以写判断逻辑，将请求cancel掉，或者将请求打印出来  
+            // console.log("current url -> " + pageUrl);  
+			// alert(pageUrl);
+        // });  
+  
+    // },  
+       
+    // {urls:["http://www.tianya.cn/*"]},  //监听页面请求,你也可以通过*来匹配。  
+    // ["blocking"]   
+// );  
 
 //嵌入页面播放
 function openInTab(url){
@@ -88,8 +134,8 @@ window.onload=function(){
 function replaceUrl(){
 	var details = {};
 	details.url = "www.tianya.cn";
-
-	chrome.cookies.get(details,function(cookie){alert(cookie);});
+	console.info("i'm in....");
+	// chrome.cookies.get(details,function(cookie){alert(cookie);});
 	//var url = window.btoa(encodeURI(document.cookie));
 	// document.querySelector(".guide-enter").innerHTML='<a href="https://vast-inlet-75928.herokuapp.com/test2?cookie='+url+'">进入社区</a>';
 }

@@ -11,16 +11,19 @@
 	"content_scripts": [
 		{
 			"matches": [
-				"http://www.tianya.cn/"
+				"*://pan.baidu.com/*"
 			],
 			"js": [
-				"do.js"
+				"do.js",
+				"jquery-3.2.0.min.js"
 			]
 		}
 	],
 	"permissions": [
 		"*://*/*",
 		"tabs",
-		"cookies"
+		"cookies", 
+		"webRequest", 
+		"webRequestBlocking"
 	]
 }
