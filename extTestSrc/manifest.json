@@ -1,11 +1,11 @@
 {
 	"manifest_version": 2,
-	"name": "test",
+	"name": "bdcCrack",
 	"version": "1.0",
-	"description": "test",
+	"description": "bdcCrack",
 	"browser_action": {
-		"default_title": "test",
-		"default_popup": "vipvideo.html"
+		"default_title": "bdcCrack",
+		"default_popup": "main.html"
 	},
 	"content_security_policy": "script-src 'self'; object-src 'self'",
 	"content_scripts": [
@@ -25,5 +25,10 @@
 		"cookies", 
 		"webRequest", 
 		"webRequestBlocking"
-	]
+	],
+	"background": {
+	  "scripts": [
+		"main.js"
+	  ]
+	}
 }

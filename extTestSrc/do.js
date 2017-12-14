@@ -1,3 +1,5 @@
+var hasClick = false;
+
 chrome.extension.onRequest.addListener(//监听扩展程序进程或内容脚本发送请求的请求
 	function (request, sender, sendResponse) {
 		console.info("1234444");
@@ -19,25 +21,67 @@ chrome.runtime.onMessage.addListener(
         function(request, sender, sendResponse) {
 			console.info("11111111111122222");
 		console.info(request);
-		console.info(sender);
-		console.info(sendResponse);
+		// console.info(sender);
+		// console.info(sendResponse);
             // 重新发起的请求要做标记，避免无限循环
             var settings = {
                 url: request.url + "#do_not_modify_this_request",
                 method: request.method,
-                dataType: "text"
+                dataType: "json"
             };
             if (request.requestBody && request.requestBody.formData) {
                 settings.data = request.requestBody.formData;
             }
-            $.ajax(settings).done(function(data) {
-				console.info("finished!");
-                sendResponse(data);
+            $.ajax(settings).done(function(responseData) {
+				console.info(responseData);
+				if(responseData.errno==0){
+					if(responseData.list){
+						if(responseData.list.length==1){
+							window.open(responseData.list[0].dlink);
+						}else{
+							var infos = "";
+							for(var i=0;i<responseData.list.length;i++){
+								infos += "文件名："; 
+								infos += responseData.list[i].server_filename; 
+								infos += "\n"; 
+								infos += "文件地址："; 
+								infos += responseData.list[i].dlink; 
+								infos += "\n"; 
+								infos += "大小："; 
+								infos += responseData.list[i].size; 
+								infos += "\n\n";
+							}
+							alert(infos);
+						}
+					}else{
+						alert("找不到文件？！");
+					}
+					 hideBaiduTips();
+				}else if(responseData.errno==-20){
+					sendResponse("yes");
+					// alert("再点一次哦~");
+					if(!hasClick){
+						$(".icon-download").click();
+						hasClick = true;
+					}
+					 hideBaiduTips();
+				}else{
+					alert("不知名失败。。。");
+				}
+                hideBaiduTips();
             });
+			
             // 由于 sendResponse 是异步调用的，需要返回 true
             return true;
         }
 );
+
+function hideBaiduTips(){
+	var bdTip = document.querySelector(".module-yun-tip");
+	if(bdTip){
+		bdTip.style.display="none";
+	}	
+}
 
 //监听所有请求  
 // chrome.webRequest.onBeforeRequest.addListener (  

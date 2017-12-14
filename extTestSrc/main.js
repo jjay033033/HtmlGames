@@ -1,10 +1,13 @@
 ﻿var thisUrl;
 
+var repeat = "no";
+
 chrome.webRequest.onBeforeRequest.addListener (  
   
     function(details) {  
       // 如果请求带有特殊标记，则不进行修改
-        if (details.url.endsWith("#do_not_modify_this_request")) {
+        if (repeat == "yes"||details.url.endsWith("#do_not_modify_this_request")) {
+			repeat = "no";
             return {}
         }
         // chrome.tabs.query({active:true},function(tab){  
@@ -22,9 +25,16 @@ chrome.webRequest.onBeforeRequest.addListener (
 		details.requestBody.formData.primaryid = details.requestBody.formData.primaryid[0];
 		details.requestBody.formData.product = details.requestBody.formData.product[0];
 		details.requestBody.formData.uk = details.requestBody.formData.uk[0];
+		if(details.requestBody.formData.vcode_input){
+			details.requestBody.formData.vcode_input = details.requestBody.formData.vcode_input[0];
+		}
+		if(details.requestBody.formData.vcode_str){
+			details.requestBody.formData.vcode_str = details.requestBody.formData.vcode_str[0];
+		}
 		console.log(details);  
 		// 使用消息机制将请求传递给页面再发起 ajax，而不是在背景页中发起
         chrome.tabs.sendMessage(details.tabId, details, function(response) {
+			repeat = response;
 			console.info("finished22222!");
             // 此处可以修改response...
             // redirectUrl = "data:application/json;charset=UTF-8;base64," + Base64.encode(newResponse)
@@ -37,6 +47,30 @@ chrome.webRequest.onBeforeRequest.addListener (
     {urls:["https://pan.baidu.com/api/sharedownload*"]},  //监听页面请求,你也可以通过*来匹配。  
     ["blocking","requestBody"]   
 ); 
+
+// chrome.webRequest.onCompleted.addListener (  
+  
+    // function(details) {  
+      // // 如果请求带有特殊标记，则不进行修改
+        // // if (details.url.endsWith("#do_not_modify_this_request")) {
+            // // return {}
+        // // }
+
+		// console.log(details);  
+		// // 使用消息机制将请求传递给页面再发起 ajax，而不是在背景页中发起
+        // // chrome.tabs.sendMessage(details.tabId, details, function(response) {
+			// // console.info("finished22222!");
+            // // // 此处可以修改response...
+            // // // redirectUrl = "data:application/json;charset=UTF-8;base64," + Base64.encode(newResponse)
+        // // });
+		 // // return {cancel: true};
+			// // alert(details);
+  
+    // },  
+       
+    // {urls:["https://pan.baidu.com/api/sharedownload*"]},  //监听页面请求,你也可以通过*来匹配。  
+    // []   
+// ); 
 
 function initUrl(){
 	chrome.tabs.getSelected(null,function(tab){  
