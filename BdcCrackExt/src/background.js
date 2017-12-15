@@ -1,5 +1,7 @@
 ﻿var repeat = "no";
 
+window.localStorage.isInside = 'true';
+
 chrome.webRequest.onBeforeRequest.addListener (  
 
 	function(details) {
