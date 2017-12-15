@@ -14,24 +14,25 @@ chrome.runtime.onMessage.addListener(
                 settings.data = request.requestBody.formData;
             }
             $.ajax(settings).done(function(responseData) {
-				console.info(responseData);
+				// console.info(responseData);
 				if(responseData.errno==0){
 					if(responseData.list){
+						var infos = "";
+						for(var i=0;i<responseData.list.length;i++){
+							infos += "文件名："; 
+							infos += responseData.list[i].server_filename; 
+							infos += "\n"; 
+							infos += "文件地址："; 
+							infos += responseData.list[i].dlink; 
+							infos += "\n"; 
+							infos += "大小："; 
+							infos += responseData.list[i].size; 
+							infos += "\n\n";
+						}
+						console.info(infos);
 						if(responseData.list.length==1){
 							window.open(responseData.list[0].dlink);
 						}else{
-							var infos = "";
-							for(var i=0;i<responseData.list.length;i++){
-								infos += "文件名："; 
-								infos += responseData.list[i].server_filename; 
-								infos += "\n"; 
-								infos += "文件地址："; 
-								infos += responseData.list[i].dlink; 
-								infos += "\n"; 
-								infos += "大小："; 
-								infos += responseData.list[i].size; 
-								infos += "\n\n";
-							}
 							alert(infos);
 						}
 					}else{
