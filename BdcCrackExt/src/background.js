@@ -51,7 +51,7 @@ chrome.webRequest.onBeforeRequest.addListener (
 			if (details.url.endsWith("#do_not_modify_this_request")) {
 				return {};
 			}
-			console.log(details);  
+			//console.log(details);  
 			// 使用消息机制将请求传递给页面再发起 ajax，而不是在背景页中发起
 			chrome.tabs.sendMessage(details.tabId, details, function(response) {
 				 //console.info("finished333!");
