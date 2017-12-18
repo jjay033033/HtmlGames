@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "bdcCrack",
 	"version": "1.0",
-	"description": "bdcCrack",
+	"description": "bdcCrack,coded by LMoon",
 	"browser_action": {
 		"default_title": "bdcCrack",
 		"default_popup": "main.html"

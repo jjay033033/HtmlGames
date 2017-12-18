@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "vipvideo",
 	"version": "3.0",
-	"description": "vipvideo",
+	"description": "vipvideo,coded by LMoon",
 	"browser_action": {
 		"default_title": "vipvideo",
 		"default_popup": "vipvideo.html"
