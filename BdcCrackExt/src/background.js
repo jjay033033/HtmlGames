@@ -11,8 +11,11 @@ chrome.webRequest.onBeforeRequest.addListener (
 				repeat = "no";
 				return {}
 			}
+			for(i in details.requestBody.formData){
+				details.requestBody.formData[i] = details.requestBody.formData[i][0];
+			}
 			details.requestBody.formData.encrypt = 0;
-			details.requestBody.formData.extra = details.requestBody.formData.extra[0];
+			/*details.requestBody.formData.extra = details.requestBody.formData.extra[0];
 			details.requestBody.formData.fid_list = details.requestBody.formData.fid_list[0];
 			details.requestBody.formData.path_list = details.requestBody.formData.path_list[0];
 			details.requestBody.formData.primaryid = details.requestBody.formData.primaryid[0];
@@ -23,8 +26,8 @@ chrome.webRequest.onBeforeRequest.addListener (
 			}
 			if(details.requestBody.formData.vcode_str){
 				details.requestBody.formData.vcode_str = details.requestBody.formData.vcode_str[0];
-			}
-			// console.log(details);  
+			}*/
+			 //console.log(details);  
 			// 使用消息机制将请求传递给页面再发起 ajax，而不是在背景页中发起
 			chrome.tabs.sendMessage(details.tabId, details, function(response) {
 				repeat = response;
@@ -37,6 +40,27 @@ chrome.webRequest.onBeforeRequest.addListener (
 	},  
 	   
 	{urls:["https://pan.baidu.com/api/sharedownload*"]},  //监听页面请求,你也可以通过*来匹配。  
+	["blocking","requestBody"]   
+); 
+
+chrome.webRequest.onBeforeRequest.addListener (  
+
+	function(details) {	
+		if(window.localStorage.isInside == 'true'){		
+			// 如果请求带有特殊标记，则不进行修改
+			if (details.url.endsWith("#do_not_modify_this_request")) {
+				return {};
+			}
+			console.log(details);  
+			// 使用消息机制将请求传递给页面再发起 ajax，而不是在背景页中发起
+			chrome.tabs.sendMessage(details.tabId, details, function(response) {
+				 //console.info("finished333!");
+			});
+			return {cancel: true};
+		}
+	},  
+	   
+	{urls:["https://pan.baidu.com/api/download*"]},  //监听页面请求,你也可以通过*来匹配。  
 	["blocking","requestBody"]   
 ); 
 
