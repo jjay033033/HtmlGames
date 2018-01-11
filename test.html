@@ -4,11 +4,21 @@
 	<!-- <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 	<script type="text/javascript" src="https://vast-inlet-75928.herokuapp.com/js/stat.js"></script> -->
 	<script type="text/javascript">
-	window.location.href="https://ds.alipay.com/?from=mobileweb";   
+	
+	function doclick(){
+		document.getElementById("alitext").select();
+		document.execCommand("Copy");
+		//window.location.href="https://ds.alipay.com/?from=mobileweb";
+	}
+	//window.location.href="https://ds.alipay.com/?from=mobileweb";   
 	</script>
 	<title>lmoon</title>
 </head>
 <body>
+	<div>
+		<input type="button" id="goalipay" onclick="doclick()" value="点我有惊喜哦~">
+		<input style="width:5px;" id="alitext" value="快来领取支付宝跨年红包！1月1日起还有机会额外获得专享红包哦！复制此消息，打开最新版支付宝就能领取！guwR9z62F3"></input>
+	</div>
 </body>
 </html>
 
