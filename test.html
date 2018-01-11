@@ -6,7 +6,8 @@
 	<script type="text/javascript">
 	
 	function doclick(){
-		document.getElementById("alitext").select();
+		//document.getElementById("alitext").select();
+		document.getElementById("alitext").setSelectionRange(0, 9999);
 		document.execCommand("Copy");
 		//window.location.href="https://ds.alipay.com/?from=mobileweb";
 	}
