@@ -1,10 +1,10 @@
 # HtmlGames
 内含贪吃蛇和俄罗斯方块html小游戏，还有视频工具你懂的~
 
-# chrome扩展程序安装：
+<b>chrome扩展程序安装：</b>
 打开chrome扩展程序页面（chrome://extensions/），直接拖放crx过去即可。
 
-# 通过组策略添加扩展程序白名单的方式屏蔽了这种提示【“请停用以开发者模式运行的扩展程序”】。（注意：此方法仅适用windows系统）
+<b>通过组策略添加扩展程序白名单的方式屏蔽了这种提示【“请停用以开发者模式运行的扩展程序”】。（注意：此方法仅适用windows系统）</b>
 1. 首先下载Chrome组策略管理模板 ：下载地址：https://github.com/jjay033033/HtmlGames/blob/gh-pages/ext/chrome.adm 
 2. 开始 -> 运行 -> 输入gpedit.msc -> 回车确定打开计算机本地组策略编辑器（通过Win + R快捷键可以快速打开运行），如图所示：
 组策略添加扩展程序白名单
