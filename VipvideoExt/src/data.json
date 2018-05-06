@@ -2,27 +2,27 @@
 	"apis": [
 		{
 			"name": "通用接口1",
-			"url": "http://api.47ks.com/webcloud/?v="
+			"url": "http://jqaaa.com/jx.php?url="
 		},
 		{
 			"name": "通用接口2",
-			"url": "http://www.yydy8.com/Common/?url="
+			"url": "http://api.xfsub.com/index.php?url="
 		},
 		{
 			"name": "通用接口3",
-			"url": "http://yun.mt2t.com/yun?url="
+			"url": "http://y.mt2t.com/lines?url="
 		},
 		{
 			"name": "通用接口4",
-			"url": "http://www.65yw.com/chaojikan.php?url="
+			"url": "http://jiexi.071811.cc/jx2.php?url="
 		},
 		{
 			"name": "腾讯视频",
-			"url": "http://api.47ks.com/webcloud/?v="
+			"url": "http://www.82190555.com/index/qqvod.php?url="
 		},
 		{
 			"name": "爱奇艺高清",
-			"url": "http://aikan-tv.com/?url="
+			"url": "http://api.pucms.com/?url="
 		}		
 	]
 }
