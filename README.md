@@ -1,5 +1,5 @@
 # HtmlGames
-内含贪吃蛇和俄罗斯方块html小游戏，还有视频工具你懂的~
+内含贪吃蛇和俄罗斯方块html小游戏，还有视频工具、百度云链接提取chrome插件你懂的~
 
 <b>chrome扩展程序安装：</b>
 打开chrome扩展程序页面（chrome://extensions/），直接拖放crx过去即可。
