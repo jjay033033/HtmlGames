@@ -83,7 +83,7 @@ function addAction(apis){
 function doRedirect(apiUrl){
 	var url = window.btoa(encodeURI(apiUrl));
 //	var url = "url="+apiUrl+thisUrl;
-	chrome.tabs.create({url : "http://www.lmoon.top/vipvideo_ext2.html?"+url}, function(tab) {});
+	chrome.tabs.create({url : "https://jjay033033.github.io/HtmlGames/vipvideo_ext2.html?"+url}, function(tab) {});
 }
 
 
